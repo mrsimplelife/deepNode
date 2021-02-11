@@ -6,4 +6,5 @@
 // require("./fs");
 // require("./crypto");
 // require("./http");
-require("./rest/restServer");
+// require("./rest/restServer");
+require("./cookie");
