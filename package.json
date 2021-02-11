@@ -1,0 +1,23 @@
+{
+  "name": "deepnode",
+  "version": "1.0.0",
+  "description": "노드 좀더 딥한 공부",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrsimplelife/deepNode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrsimplelife/deepNode/issues"
+  },
+  "homepage": "https://github.com/mrsimplelife/deepNode#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.25"
+  }
+}
