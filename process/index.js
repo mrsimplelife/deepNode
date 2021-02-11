@@ -1,3 +1,4 @@
+console.log(process.uptime());
 setImmediate(() => {
   console.log("setImmediate");
 });
@@ -10,3 +11,5 @@ Promise.resolve().then(() => {
 process.nextTick(() => {
   console.log("nextTick");
 });
+console.log(process.uptime());
+process.exit(0);
