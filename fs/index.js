@@ -1,11 +1,38 @@
 const fs = require("fs");
-const writeStream = fs.createWriteStream("./wirtebuffer.txt");
-writeStream.on("finish", () => {
-  console.log("finish");
+
+console.log("before", process.memoryUsage().rss);
+const readStream = fs.createReadStream("./big.txt");
+const writeStream = fs.createWriteStream("./big2.txt");
+readStream.pipe(writeStream);
+readStream.on("end", () => {
+  console.log("stream", process.memoryUsage().rss);
 });
-writeStream.write("ok write\n");
-writeStream.write("ok hihihihi\n");
-writeStream.end();
+
+// console.log("before", process.memoryUsage().rss);
+// const data = fs.readFileSync("./big.txt");
+// fs.writeFileSync("./big2.txt", data);
+// console.log("buffer", process.memoryUsage().rss);
+
+// const file = fs.createWriteStream("./big.txt");
+// for (let i = 0; i < 10_000_000; i++) {
+//   file.write("very very big file coming\n");
+// }
+// file.end();
+
+// const zlib = require("zlib");
+// const zlibStream = zlib.createGzip();
+// const readStream = fs.createReadStream("./testbuffer.txt", {
+//   highWaterMark: 16,
+// });
+// const writeStream = fs.createWriteStream("./wirtestream.txt.gz");
+// readStream.pipe(zlibStream).pipe(writeStream);
+// const writeStream = fs.createWriteStream("./wirtebuffer.txt");
+// writeStream.on("finish", () => {
+//   console.log("finish");
+// });
+// writeStream.write("ok write\n");
+// writeStream.write("ok hihihihi\n");
+// writeStream.end();
 // const readStream = fs.createReadStream("./testbuffer.txt", {
 //   highWaterMark: 16,
 // });
