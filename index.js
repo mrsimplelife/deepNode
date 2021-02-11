@@ -5,4 +5,5 @@
 // require("./child-process");
 // require("./fs");
 // require("./crypto");
-require("./http");
+// require("./http");
+require("./rest/restServer");
