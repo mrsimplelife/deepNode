@@ -1,7 +1,14 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const morgan = require("morgan");
+const cookeiParser = require("cookie-parser");
 app.set("port", process.env.PORT || 3000);
+app.use(morgan("dev"));
+app.use(cookeiParser("secret"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use((req, res, next) => {
   console.log("all req");
   next();
@@ -28,6 +35,17 @@ app.get(
   "/",
   (req, res, next) => {
     // res.send("hi");
+    console.log(req.cookies);
+    console.log(req.signedCookies);
+    const expires = new Date();
+    expires.setSeconds(expires.getSeconds() + 5);
+    res.cookie("name", encodeURIComponent("me"), {
+      expires: expires,
+      httpOnly: true,
+      path: "/",
+      signed: true,
+    });
+    // res.clearCookie("name");
     res.sendFile(path.join(__dirname, "index.html"));
     if (true) {
       next("route");
