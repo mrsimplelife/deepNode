@@ -17,12 +17,31 @@ app.use(
     next();
   },
   (req, res, next) => {
-    throw new Error("error!!!");
+    try {
+      throw new Error("error!!!");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+app.get(
+  "/",
+  (req, res, next) => {
+    // res.send("hi");
+    res.sendFile(path.join(__dirname, "index.html"));
+    if (true) {
+      next("route");
+    } else {
+      next();
+    }
+  },
+  (req, res) => {
+    console.log("no");
   }
 );
 app.get("/", (req, res) => {
   // res.send("hi");
-  res.sendFile(path.join(__dirname, "index.html"));
+  console.log("yes");
 });
 app.post("/", (req, res) => {
   res.send("hi post");
