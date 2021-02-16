@@ -4,7 +4,7 @@
   "description": "노드 좀더 딥한 공부",
   "main": "index.js",
   "scripts": {
-    "start": "UV_THREADPOOL_SIZE=8 node index",
+    "start": "UV_THREADPOOL_SIZE=8 nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
