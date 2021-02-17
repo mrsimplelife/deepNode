@@ -6,7 +6,10 @@ const cookeiParser = require("cookie-parser");
 const session = require("express-session");
 const multer = require("multer");
 const fs = require("fs");
+const dotenv = require("dotenv");
 
+dotenv.config();
+// console.log(process.env);
 try {
   fs.readdirSync(path.join(__dirname, "uploads"));
 } catch (error) {
@@ -27,17 +30,17 @@ const upload = multer({
 });
 app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
-// console.log(__dirname);
+app.use(cookeiParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     resave: false,
     saveUninitialized: false,
-    secret: "sessionSecret",
+    secret: process.env.SESSION_SCRET,
     cookie: {},
     name: "merong",
   })
 );
-app.use(cookeiParser("secret"));
+// console.log(__dirname);
 app.use("/", (req, res, next) => {
   console.log(req.session.id);
   if (req.session.userId) {
