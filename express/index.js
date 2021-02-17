@@ -5,10 +5,11 @@ const morgan = require("morgan");
 const cookeiParser = require("cookie-parser");
 app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
+// console.log(__dirname);
+app.use("/", express.static(path.join(__dirname, "public_secret")));
 app.use(cookeiParser("secret"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use((req, res, next) => {
   console.log("all req");
   next();
