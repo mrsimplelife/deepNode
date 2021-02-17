@@ -3,15 +3,35 @@ const path = require("path");
 const app = express();
 const morgan = require("morgan");
 const cookeiParser = require("cookie-parser");
+const session = require("express-session");
+
 app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
 // console.log(__dirname);
-app.use("/", express.static(path.join(__dirname, "public_secret")));
+
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "sessionSecret",
+    cookie: {},
+    name: "merong",
+  })
+);
 app.use(cookeiParser("secret"));
+app.use("/", (req, res, next) => {
+  console.log(req.session.userId);
+  if (req.session.id) {
+    express.static(path.join(__dirname, "public_secret"))(req, res, next);
+  } else {
+    next();
+  }
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   console.log("all req");
+  req.test = "test";
   next();
 });
 app.use(
@@ -35,9 +55,14 @@ app.use(
 app.get(
   "/",
   (req, res, next) => {
+    console.log(req.test);
+    req.session.name = "hihi";
+    console.log(req.session);
+    console.log(req.sessionID);
+    req.session.destroy();
     // res.send("hi");
-    console.log(req.cookies);
-    console.log(req.signedCookies);
+    console.log("cookie", req.cookies);
+    console.log("signedCookie", req.signedCookies);
     const expires = new Date();
     expires.setSeconds(expires.getSeconds() + 5);
     res.cookie("name", encodeURIComponent("me"), {
@@ -46,7 +71,7 @@ app.get(
       path: "/",
       signed: true,
     });
-    // res.clearCookie("name");
+    res.clearCookie("name");
     res.sendFile(path.join(__dirname, "index.html"));
     if (true) {
       next("route");
