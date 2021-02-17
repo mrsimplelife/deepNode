@@ -7,14 +7,20 @@ const morgan = require("morgan");
 const cookeiParser = require("cookie-parser");
 const session = require("express-session");
 const fs = require("fs");
+const nunjucks = require("nunjucks");
 const uploadRouter = require("./router/upload");
 const aboutRouter = require("./router/about");
 const indexRouter = require("./router/index");
 const categoryRouter = require("./router/category");
 // console.log(process.env);
 app.set("port", process.env.PORT || 3000);
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+// app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "pug");
+app.set("view engine", "html");
+nunjucks.configure(path.join(__dirname, "views"), {
+  express: app,
+  watch: true,
+});
 
 try {
   fs.readdirSync(path.join(__dirname, "uploads"));
