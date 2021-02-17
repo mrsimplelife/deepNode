@@ -7,8 +7,15 @@ const morgan = require("morgan");
 const cookeiParser = require("cookie-parser");
 const session = require("express-session");
 const fs = require("fs");
-
+const uploadRouter = require("./router/upload");
+const aboutRouter = require("./router/about");
+const indexRouter = require("./router/index");
+const categoryRouter = require("./router/category");
 // console.log(process.env);
+app.set("port", process.env.PORT || 3000);
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
 try {
   fs.readdirSync(path.join(__dirname, "uploads"));
 } catch (error) {
@@ -16,7 +23,6 @@ try {
   fs.mkdirSync(path.join(__dirname, "uploads"));
 }
 
-app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
 app.use(cookeiParser(process.env.COOKIE_SECRET));
 app.use(
@@ -44,11 +50,6 @@ app.use((req, res, next) => {
   req.test = "test";
   next();
 });
-
-const uploadRouter = require("./router/upload");
-const aboutRouter = require("./router/about");
-const indexRouter = require("./router/index");
-const categoryRouter = require("./router/category");
 
 app.use("/", indexRouter);
 app.use("/upload", uploadRouter);

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const path = require("path");
 router.get(
   "/",
   (req, res, next) => {
@@ -20,7 +20,7 @@ router.get(
       signed: true,
     });
     res.clearCookie("name");
-    res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "..", "index.html"));
     if (true) {
       next("route");
     } else {
