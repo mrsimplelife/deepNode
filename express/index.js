@@ -4,11 +4,30 @@ const app = express();
 const morgan = require("morgan");
 const cookeiParser = require("cookie-parser");
 const session = require("express-session");
+const multer = require("multer");
+const fs = require("fs");
 
+try {
+  fs.readdirSync(path.join(__dirname, "uploads"));
+} catch (error) {
+  console.error("make uploads folder");
+  fs.mkdirSync(path.join(__dirname, "uploads"));
+}
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, callback) {
+      callback(null, path.join(__dirname, "uploads"));
+    },
+    filename(req, file, callback) {
+      const ext = path.extname(file.originalname);
+      callback(null, path.basename(file.originalname, ext) + Date.now() + ext);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
 // console.log(__dirname);
-
 app.use(
   session({
     resave: false,
@@ -20,8 +39,8 @@ app.use(
 );
 app.use(cookeiParser("secret"));
 app.use("/", (req, res, next) => {
-  console.log(req.session.userId);
-  if (req.session.id) {
+  console.log(req.session.id);
+  if (req.session.userId) {
     express.static(path.join(__dirname, "public_secret"))(req, res, next);
   } else {
     next();
@@ -50,6 +69,22 @@ app.use(
     } catch (error) {
       next(error);
     }
+  }
+);
+app.get("/upload", (req, res) => {
+  res.sendFile(path.join(__dirname, "multipart.html"));
+});
+app.post(
+  "/upload",
+  //  upload.single("image"),
+  // upload.array("image"),
+  // upload.fields([{ name: "image1" }, { name: "image2" }, { name: "image3" }]),
+  upload.none(),
+  (req, res) => {
+    // console.log(req.file);
+    // console.log(req.files);
+    console.log(req.body.title);
+    res.send("ok");
   }
 );
 app.get(
