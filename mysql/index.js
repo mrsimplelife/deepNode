@@ -4,14 +4,14 @@ const morgan = require("morgan");
 const nunjucks = require("nunjucks");
 
 const { sequelize } = require("../models");
-// const indexRouter = require();
-// const usersRouter = require();
-// const commentsRouter = require();
+const indexRouter = require("./router");
+const usersRouter = require("./router/users");
+const commentsRouter = require("./router/comments");
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "html");
-nunjucks.configure({
+nunjucks.configure(path.join(__dirname, "views"), {
   express: app,
   watch: true,
 });
@@ -27,10 +27,9 @@ app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-// app.use("/", indexRouter);
-// app.use("/", usersRouter);
-// app.use("/", commentsRouter);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/comments", commentsRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} has no Router`);

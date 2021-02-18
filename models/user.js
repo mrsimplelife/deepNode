@@ -14,7 +14,7 @@ User.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,
     },
-    merried: {
+    married: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       // allowNull defaults to true
