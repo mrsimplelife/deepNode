@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require("sequelize");
 const { sequelize } = require("../models");
 class User extends Model {}
+console.log("user init");
 User.init(
   {
     // Model attributes are defined here
@@ -41,3 +42,6 @@ User.init(
   }
 );
 module.exports = User;
+const Comment = require("./comment");
+console.log("user associate");
+User.hasMany(Comment, { foreignKey: "commenter", sourceKey: "id" });
