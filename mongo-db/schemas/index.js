@@ -1,7 +1,6 @@
-const { connect } = require("http2");
 const mongoose = require("mongoose");
 
-module.exports = () => {
+module.exports = connect = () => {
   if (process.env.NODE_ENV !== "production") {
     mongoose.set("debug", true);
   }
